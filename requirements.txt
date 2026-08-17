@@ -1,0 +1,27 @@
+# === Core ===
+torch>=2.2
+torchvision>=0.17
+numpy
+pandas
+pyyaml
+scikit-learn
+pillow
+matplotlib
+tqdm
+einops
+
+# === Video model zoos ===
+pytorchvideo            # I3D, SlowFast, X3D builders
+transformers>=4.44      # VideoMAE, TimeSformer, V-JEPA 2
+timm                    # backbone utils
+
+# === Video IO ===
+av                      # torchvision.io / pyav backend (Windows OK)
+opencv-python
+# decord is faster but wheels are flaky on Windows/Py3.13 -> Linux (Kaggle/Lambda) only
+decord; platform_system != "Windows"
+
+# === VideoMamba official CUDA kernels (Linux + CUDA ONLY) ===
+# Install MANUALLY on Kaggle/Lambda, NOT on Windows:
+#   pip install causal-conv1d>=1.2 mamba-ssm
+# On Windows the code falls back to a pure-PyTorch VideoMamba-lite block.

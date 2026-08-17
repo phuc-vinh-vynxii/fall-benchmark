@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+runs/
+results/
+checkpoint/
+splits/*/._*
+lambda/testset_clean/

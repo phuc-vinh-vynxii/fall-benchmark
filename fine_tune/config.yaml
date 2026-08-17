@@ -1,0 +1,20 @@
+# Fine-tune config (Case 2). Edit + run: python finetune.py --config config.yaml
+# Loads pretrained weights, fine-tunes on the data. null subset + split csvs = full CS run.
+
+data_root: null            # null -> ../../MergedFallDataset
+manifest_csv: null
+model: videomae            # i3d | slowfast | x3d | tsm | videomae | timesformer | videomamba | vjepa2
+num_frames: 16
+img_size: 224              # use 256 for vjepa2
+batch_size: 2              # vjepa2 -> 1 (needs Lambda, large GPU)
+lr: 1.0e-5                 # fine-tune LR (10x lower than from-scratch)
+weight_decay: 0.05
+epochs: 5
+
+subset_per_class: 100      # SMOKE TEST. Set null + provide splits for the real run.
+train_split_csv: null      # e.g. ../splits/cs/train.csv
+val_split_csv: null        # e.g. ../splits/cs/val.csv
+
+num_workers: 0
+seed: 42
+out_dir: runs

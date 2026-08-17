@@ -1,0 +1,20 @@
+# From-scratch config (Case 1). Edit + run: python train.py --config config.yaml
+# null subset + split csvs = full leak-safe CS run.
+
+data_root: null            # null -> ../../MergedFallDataset
+manifest_csv: null
+model: x3d                 # i3d | slowfast | x3d | tsm | videomae | timesformer | videomamba
+num_frames: 16
+img_size: 224
+batch_size: 2              # 6GB-safe for x3d/tsm/videomamba; lower for slowfast/i3d
+lr: 1.0e-4                 # from-scratch wants a higher LR than fine-tune
+weight_decay: 0.05
+epochs: 5
+
+subset_per_class: 100      # SMOKE TEST. Set null + provide splits below for the real run.
+train_split_csv: null      # e.g. ../splits/cs/train.csv
+val_split_csv: null        # e.g. ../splits/cs/val.csv
+
+num_workers: 0             # >0 only on Linux (Kaggle/Lambda)
+seed: 42
+out_dir: runs
