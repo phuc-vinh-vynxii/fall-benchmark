@@ -123,9 +123,16 @@ bạn: `extracted_falls_Video_0_fall_01` (20 ảnh) và `UR_adl-01-cam0-rgb` (15
 ## ☐ Bước 2.2 — Các cell
 
 ```python
-# Cell 1 — lấy code của bạn
-!git clone https://github.com/phuc-vinh-vynxii/fall-benchmark.git /kaggle/working/fb
-%cd /kaggle/working/fb
+# Cell 1 — lấy code của bạn (chạy lại bao nhiêu lần cũng đúng)
+import os
+REPO = "https://github.com/phuc-vinh-vynxii/fall-benchmark.git"
+D = "/kaggle/working/fb"
+if os.path.isdir(D + "/.git"):
+    !git -C {D} pull --ff-only          # đã có -> chỉ kéo phần mới
+else:
+    !git clone {REPO} {D}
+%cd {D}
+!git log --oneline -1                    # xác nhận đang ở commit mới nhất
 ```
 
 Repo đang **private** nên lệnh trên sẽ báo lỗi xác thực. Chọn 1:
