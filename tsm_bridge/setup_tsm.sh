@@ -35,12 +35,21 @@ else
   exit 1
 fi
 
-echo "== 4. kiem tra =="
-ls "$TSM_DIR/train/scripts/" 2>/dev/null || echo "  (khong co thu muc scripts/)"
+echo "== 4. categories.txt =="
+# Phai tao ngay o day: dataset_config.return_dataset() mo file nay de biet n_class, nen neu
+# doi den gen_lists.py moi ghi thi buoc kiem tra ben duoi (va ca main.py) se FileNotFoundError.
+# gen_lists.py ghi de lai cung noi dung nay, khong sao.
+mkdir -p "$W251_ROOT/labels"
+printf 'NoFALL\nFALL\n' > "$W251_ROOT/labels/categories.txt"
+echo "  $(tr '\n' ' ' < "$W251_ROOT/labels/categories.txt")"
+
+echo "== 5. kiem tra =="
 python - <<PY
 import sys; sys.path.insert(0, "$TSM_DIR/train")
 from ops import dataset_config
-print("  return_dataset ->", dataset_config.return_dataset("w251fall", "RGB"))
+cats, tr, va, root, prefix = dataset_config.return_dataset("w251fall", "RGB")
+print(f"  n_class={cats}  root_data={root}  prefix={prefix}")
+print(f"  train list -> {tr}")
 PY
 echo
 echo "XONG. Lenh train:"
