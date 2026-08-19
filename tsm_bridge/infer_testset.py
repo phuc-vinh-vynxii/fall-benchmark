@@ -95,7 +95,9 @@ def main():
                                      num_workers=args.workers, pin_memory=True)
 
     dev = "cuda" if torch.cuda.is_available() else "cpu"
-    net = net.to(dev).eval()
+    net = net.to(dev)
+    net.eval()          # KHONG noi chuoi .to(dev).eval(): TSN ghi de train() de dong bang BN
+                        # nhung khong `return self`, ma eval() = return self.train(False) -> None
     print(f"device={dev}  clip={len(ds)}  list={list_file.name}")
 
     probs, ys = [], []
