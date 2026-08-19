@@ -36,14 +36,18 @@ Hoặc chạy cả chuỗi: `bash tsm_bridge/pipeline.sh` (xem `--limit`, `EPOCH
 | `ops/dataset_config.py` | `ROOT_DATASET = '/data/'` hardcode | symlink `/data/w251fall`, không sửa code gốc |
 | `test_models.py` | in top-1/top-5, không có metric của paper | `infer_testset.py` dùng `common/metrics.py` |
 
-## Không cần vá cho PyTorch 2.x
+## Vá cho PyTorch mới — `setup_tsm.sh` làm hết
 
-Đã đọc `train/main.py`: repo dùng `clip_grad_norm_` (bản mới), không còn `.data[0]`. Chỉ thiếu:
+| Cần | Vì sao |
+|---|---|
+| `pip install tensorboardX` | `main.py` import trực tiếp |
+| symlink `/data/w251fall` | `ops/dataset_config.py` hardcode `ROOT_DATASET = '/data/'` |
+| `ops/utils.py`: `correct[:k].view(-1)` → `.reshape(-1)` | sau `topk()/t()/eq()` tensor không còn liền mạch bộ nhớ; PyTorch mới báo *view size is not compatible with input tensor's size and stride* |
 
-1. `tensorboardX` → `pip install tensorboardX` (đã có trong `setup_tsm.sh`)
-2. `/data/w251fall` → symlink (đã có trong `setup_tsm.sh`)
+`main.py` thì sạch — repo đã dùng `clip_grad_norm_`, không còn `.data[0]`.
 
-Nếu về sau phát sinh lỗi nào khác, ghi lại vào đây để lần sau khỏi mò lại.
+Phát sinh lỗi nào khác thì thêm bước vá vào `setup_tsm.sh` (kiểu idempotent: `grep` trước khi `sed`)
+và ghi một dòng vào bảng trên.
 
 ## Quy ước nhãn
 

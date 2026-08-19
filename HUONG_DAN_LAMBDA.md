@@ -65,7 +65,7 @@ else:
 ```python
 # Cell 4 — tìm manifest.csv
 !ls /kaggle/input/
-!find /kaggle/input -maxdepth 3 -name manifest.csv
+!find /kaggle/input/datasets/phucvinhvynxii/fall-dataset/manifest.csv -maxdepth 3 -name manifest.csv
 ```
 `find` in ra đường dẫn đầy đủ → **thư mục cha của nó** chính là `DATA` cho Cell 5.
 
@@ -87,7 +87,9 @@ Kỳ vọng `24/24 ok=24 loi=0`, rồi `train: 8 dòng · val: 8 · test: 8`. D�
     --arch mobilenetv2 --num_segments 8 --shift --shift_div=8 --shift_place=blockres \
     --consensus_type=avg --epochs 2 --batch-size 8 -j 2 --npb
 ```
-Repo đã là bản TSM mới (`clip_grad_norm_`, không còn `.data[0]`) nên **không cần vá PyTorch 2.x**. Lỗi lạ thì dán traceback cho agent.
+`setup_tsm.sh` đã vá sẵn `ops/utils.py` (`correct[:k].view(-1)` → `.reshape(-1)`, lỗi
+*view size is not compatible with input tensor's size and stride*). Lỗi khác thì dán traceback cho agent —
+sửa xong nhớ ghi vào `tsm_bridge/setup_tsm.sh` để lần sau khỏi mò lại.
 
 ```python
 # Cell 7 — inference thử

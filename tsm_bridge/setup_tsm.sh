@@ -35,6 +35,18 @@ else
   exit 1
 fi
 
+echo "== 3b. va code cho PyTorch moi =="
+# ops/utils.py: correct[:k].view(-1) -> .reshape(-1)
+# Sau topk()/t()/eq() tensor khong con lien mach bo nho; PyTorch moi tu choi .view() trong
+# truong hop do (RuntimeError: view size is not compatible with input tensor's size and stride).
+UTILS="$TSM_DIR/train/ops/utils.py"
+if grep -q 'correct\[:k\].view(-1)' "$UTILS" 2>/dev/null; then
+  sed -i 's/correct\[:k\]\.view(-1)/correct[:k].reshape(-1)/' "$UTILS"
+  echo "  da va ops/utils.py (view -> reshape)"
+else
+  echo "  ops/utils.py: khong can va"
+fi
+
 echo "== 4. categories.txt =="
 # Phai tao ngay o day: dataset_config.return_dataset() mo file nay de biet n_class, nen neu
 # doi den gen_lists.py moi ghi thi buoc kiem tra ben duoi (va ca main.py) se FileNotFoundError.
