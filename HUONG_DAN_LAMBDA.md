@@ -63,10 +63,14 @@ else:
 ```
 
 ```python
-# Cell 4 — xem manifest.csv nằm ở đâu
-!ls /kaggle/input/fall-dataset/ | head
+# Cell 4 — tìm manifest.csv
+!ls /kaggle/input/
+!find /kaggle/input -maxdepth 3 -name manifest.csv
 ```
-Thấy `manifest.csv` ngay đó → `DATA=/kaggle/input/fall-dataset`. Thấy thư mục `MergedFallDataset` → `DATA=/kaggle/input/fall-dataset/MergedFallDataset`.
+`find` in ra đường dẫn đầy đủ → **thư mục cha của nó** chính là `DATA` cho Cell 5.
+
+- `ls` rỗng → chưa Add Input. Panel phải → **Input → + Add Input** → thêm cả 3 dataset ở mục 2.1.
+- Tên thư mục khác `fall-dataset` → Kaggle đặt tên theo tên dataset chứ không theo slug; dùng đúng tên hiện ra.
 
 ```python
 # Cell 5 — smoke test: 4 clip mỗi lớp mỗi split
