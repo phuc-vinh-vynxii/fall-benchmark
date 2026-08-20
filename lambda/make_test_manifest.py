@@ -140,8 +140,7 @@ def main():
                 f"rebuild: {len(man)} clean test videos"] if exists else
                ["kaggle", "datasets", "create", "-p", str(OUT_DIR)])
         print("\n$", " ".join(cmd))
-        env = {**os.environ, "KAGGLE_CONFIG_DIR": str(DATA)}
-        sys.exit(subprocess.call(cmd, env=env))
+        sys.exit(subprocess.call(cmd, env=os.environ.copy()))   # da set o tren neu tim thay
 
 
 if __name__ == "__main__":
