@@ -109,7 +109,18 @@ sửa xong nhớ ghi vào `tsm_bridge/setup_tsm.sh` để lần sau khỏi mò l
 # PHẦN 3 — Lambda (bắt đầu tính tiền)
 
 ### ☐ 3.1 Chuẩn bị TRƯỚC khi Launch
-Mở sẵn notepad 3 thứ: **Lambda API key** (dashboard → API keys), `kaggle.json` (`d:\NuverxAI - RD\data\`), SSH key (`~\.ssh\id_ed25519`).
+Chuẩn bị 3 thứ:
+
+| | Ở đâu |
+|---|---|
+| **Lambda API key** | Dashboard → API keys → Generate (để tự terminate) |
+| **SSH public key** | `~\.ssh\id_ed25519_lambda.pub` → dán vào Dashboard → **SSH Keys**; lúc Launch chọn đúng key này |
+| **kaggle.json** | `d:\NuverxAI - RD\kaggle.json` — **không phải** bản ở `~\.kaggle\` (token cũ, trả 403) |
+
+Kiểm tra token còn sống TRƯỚC khi Launch:
+```powershell
+$env:KAGGLE_CONFIG_DIR="d:\NuverxAI - RD"; kaggle datasets files phucvinhvynxii/fall-testset-clean
+```
 
 Chọn **A10 24 GB (~$0.75/h)** — TSM MobileNetV2 rất nhẹ, không cần H100. Cần ~150 GB đĩa. Launch → ghi IP.
 
@@ -122,7 +133,7 @@ ssh lambda
 
 ### ☐ 3.3 Đưa code lên
 ```powershell
-scp "d:\NuverxAI - RD\data\kaggle.json" lambda:~/.kaggle/kaggle.json
+scp "d:\NuverxAI - RD\kaggle.json" lambda:~/.kaggle/kaggle.json
 ssh lambda
 ```
 ```bash
