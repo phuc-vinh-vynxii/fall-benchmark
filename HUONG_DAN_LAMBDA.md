@@ -132,6 +132,7 @@ cd ~/fall-benchmark/lambda && sed -i 's/\r$//' *.sh && chmod +x *.sh
 ```
 
 ### ☐ 3.4 Nhiều terminal = tmux
+Không cần cài gì trên Windows — tmux chạy **trên máy Lambda**, Windows chỉ cần `ssh` (có sẵn).
 OpenCode và Claude Code **không có panel terminal**. Terminal thật là tmux:
 ```bash
 tmux new -s main
@@ -196,12 +197,23 @@ NO_TERMINATE=1 ./lambda/job.sh start run1 -- bash tsm_bridge/pipeline.sh
 EPOCHS=3      ./lambda/job.sh start run1 -- bash tsm_bridge/pipeline.sh
 ```
 
-### ☐ 4.2 Theo dõi
+### ☐ 4.2 Theo dõi — đóng terminal rồi vào lại lúc nào cũng được
+"ID session" chính là cái tên bạn đặt (`run1`). Job sống trong tmux session `job-run1` **trên server**;
+terminal của bạn chỉ là cửa sổ nhìn vào, đóng lại không ảnh hưởng gì.
+
 ```bash
 ./lambda/job.sh ls            # run1  RUNNING  up
-./lambda/job.sh log run1      # Ctrl-C thoát, job VẪN CHẠY
+./lambda/job.sh log run1      # log trực tiếp — Ctrl-C thoát, job VẪN CHẠY
+./lambda/job.sh attach run1   # vào thẳng màn hình đang chạy (Ctrl-B rồi D để ra)
 ./lambda/job.sh status run1
 ```
+Hỏi nhanh không cần đăng nhập (dán được vào OpenCode):
+```powershell
+ssh lambda "cd fall-benchmark && ./lambda/job.sh status run1"
+```
+Log ghi liên tục ra `~/jobs/run1/live.log`, không attach vẫn xem lại được từ đầu.
+tmux sống qua mất mạng và đóng terminal, **không** sống qua reboot instance — reboot thì
+`job.sh start` lại, `pipeline.sh` chạy tiếp từ bước dở.
 
 | Bước | Thời gian |
 |---|---|
