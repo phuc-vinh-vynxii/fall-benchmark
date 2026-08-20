@@ -65,7 +65,12 @@ def main():
     ap.add_argument("--push", action="store_true", help="create/version the Kaggle dataset")
     args = ap.parse_args()
 
-    os.environ.setdefault("KAGGLE_CONFIG_DIR", str(DATA))
+    # kaggle.json co the nam o data/, o thu muc cha, hoac cho mac dinh ~/.kaggle.
+    # Chi ep KAGGLE_CONFIG_DIR khi thuc su tim thay file, nguoc lai de kaggle tu tim.
+    for cand in (DATA, DATA.parent):
+        if (cand / "kaggle.json").is_file():
+            os.environ["KAGGLE_CONFIG_DIR"] = str(cand)
+            break
     from kaggle.api.kaggle_api_extended import KaggleApi
     api = KaggleApi(); api.authenticate()
 
